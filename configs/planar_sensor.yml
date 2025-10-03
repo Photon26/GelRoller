@@ -1,0 +1,67 @@
+dataset:
+  data_path: data/planar_ball  # 你的平面传感器数据路径
+  shadow_threshold: 0.1
+  sparse_input: null
+  sparse_input_random_seed: null
+
+# 球体约束配置
+sphere_constraint:
+  enabled: true
+  sphere_center: [320, 240, 100]  # 球心坐标 (x, y, z)，需要根据实际情况调整
+  sphere_radius: 50               # 球体半径（像素）
+  contact_center: [320, 240]      # 接触区域中心 (x, y)
+  contact_radius: 30              # 接触区域半径（像素）
+
+experiment:
+  batch_size: 4*1
+  cuda: cuda:0
+  end_epoch: 30000
+  eval_every_iter: 1000
+  log_path: ./outputs/planar_results
+  randomseed: null
+  save_every_epoch: 1000
+  start_epoch: 1
+
+# 新的损失函数权重配置
+loss:
+  # 球体约束相关损失
+  sphere_normal_factor: 1.0      # 球体区域法向量约束权重
+  sphere_ph_factor: 2.0          # 球体区域光度约束权重
+  background_normal_factor: 0.2  # 背景区域法向量约束权重（较小，因为平面背景信息有限）
+  other_contact_factor: 3.0      # 其他接触区域约束权重
+  
+  # 传统损失（当不使用球体约束时）
+  ph_factor: 2.0
+  contact_factor: 3.0
+  normal_factor: 0.4
+  rgb_loss: l1
+
+models:
+  checkpoint_path: null
+  light_model:
+    explicit_position: true
+    explicit_intensity: true
+    hidden_size: 64
+    ld_noise: 0
+    li_noise: 0
+    num_layers: 3
+    skip_connect_every: 8
+    type: Light_Model_CNN
+  load_checkpoint: false
+  nerf:
+    hidden_size: 256
+    include_input_input1: 2
+    include_input_input2: 0
+    num_encoding_fn_input1: 10
+    num_encoding_fn_input2: 0
+    num_layers: 8
+    skip_connect_every: 3
+
+optimizer:
+  lr: 0.001
+  light_lr: 0.0005  # 光照模型可以使用不同的学习率
+  type: Adam
+
+scheduler:
+  gamma: 1
+  step_size: 500000
