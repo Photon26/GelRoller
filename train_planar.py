@@ -462,3 +462,4 @@ if __name__ == "__main__":
                     train_planar(input_data=eval_datain, testing=True)
                 print('==================================================')
             model.train()
+

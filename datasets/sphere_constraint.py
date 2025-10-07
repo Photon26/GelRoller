@@ -162,3 +162,4 @@ def get_sphere_constraint_data(image_path, sphere_center, sphere_radius, contact
         'valid_mask': valid_mask,            # 有效重建区域
         'sphere_params': (sphere_center[0], sphere_center[1], sphere_center[2], sphere_radius)
     }
+

@@ -152,3 +152,4 @@ class Planar_Data_Loader(Dataset):
             'background_pixel_count': torch.sum(self.background_mask > 0.5).item(),
             'other_contact_pixel_count': torch.sum(self.mask == 2.0).item()
         }
+
